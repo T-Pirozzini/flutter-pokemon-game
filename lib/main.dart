@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_pokemon_game/button.dart';
 import 'package:flutter_pokemon_game/characters/boy.dart';
@@ -32,8 +33,8 @@ class _HomePageState extends State<HomePage> {
   */
 
   // littleroot
-  double mapX = 0;
-  double mapY = 0;
+  double mapX = 0.08;
+  double mapY = 0.65;
 
   // boy character
   int boySpriteCount = 0;
@@ -41,37 +42,54 @@ class _HomePageState extends State<HomePage> {
 
   // game stuff
   String currentLocation = 'littleroot';
+  double step = 0.25;
 
   void moveUp() {
     boyDirection = 'Up';
     setState(() {
-      mapY += 0.2;
+      mapY += step;
     });
+    animateWalk();
   }
 
   void moveRight() {
     boyDirection = 'Right';
     setState(() {
-      mapX -= 0.2;
+      mapX -= step;
     });
+    animateWalk();
   }
 
   void moveDown() {
     boyDirection = 'Down';
     setState(() {
-      mapY -= 0.2;
+      mapY -= step;
     });
+    animateWalk();
   }
 
   void moveLeft() {
     boyDirection = 'Left';
     setState(() {
-      mapX += 0.2;
+      mapX += step;
     });
+    animateWalk();
   }
 
   void pressedA() {}
   void pressedB() {}
+
+  void animateWalk() {
+    Timer.periodic(Duration(milliseconds: 50), (timer) {
+      setState(() {
+        boySpriteCount++;
+      });
+      if (boySpriteCount == 3) {
+        boySpriteCount = 0;
+        timer.cancel();
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
