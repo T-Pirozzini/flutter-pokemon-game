@@ -25,6 +25,13 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  void moveUp() {}
+  void moveRight() {}
+  void moveDown() {}
+  void moveLeft() {}
+  void pressedA() {}
+  void pressedB() {}
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,15 +45,28 @@ class _HomePageState extends State<HomePage> {
         ),
         Expanded(
           child: Container(
-            color: Colors.grey[800],
+            color: Colors.grey[900],
             child: Padding(
               padding: const EdgeInsets.all(20.0),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text(
-                    'G A M E B O Y',
-                    style: TextStyle(color: Colors.white),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'G A M E B O Y',
+                        style: TextStyle(color: Colors.white, fontSize: 18),
+                      ),
+                      Text(
+                        '  ♥  ',
+                        style: TextStyle(color: Colors.red, fontSize: 20),
+                      ),
+                      Text(
+                        'F L U T T E R',
+                        style: TextStyle(color: Colors.white, fontSize: 18),
+                      ),
+                    ],
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -60,7 +80,7 @@ class _HomePageState extends State<HomePage> {
                                 width: 50,
                               ),
                               MyButton(
-                                text: '⇐',
+                                text: '←',
                                 function: moveLeft,
                               ),
                               Container(
@@ -72,7 +92,7 @@ class _HomePageState extends State<HomePage> {
                           Column(
                             children: [
                               MyButton(
-                                text: '⇑',
+                                text: '↑',
                                 function: moveUp,
                               ),
                               Container(
@@ -80,7 +100,7 @@ class _HomePageState extends State<HomePage> {
                                 width: 50,
                               ),
                               MyButton(
-                                text: '⇓',
+                                text: '↓',
                                 function: moveDown,
                               ),
                             ],
@@ -92,7 +112,7 @@ class _HomePageState extends State<HomePage> {
                                 width: 50,
                               ),
                               MyButton(
-                                text: '⇒',
+                                text: '→',
                                 function: moveRight,
                               ),
                               Container(
@@ -112,16 +132,16 @@ class _HomePageState extends State<HomePage> {
                                 width: 50,
                               ),
                               MyButton(
-                                text: 'b',
-                                function: () {},
+                                text: 'B',
+                                function: pressedB,
                               )
                             ],
                           ),
                           Column(
                             children: [
                               MyButton(
-                                text: 'a',
-                                function: () {},
+                                text: 'A',
+                                function: pressedA,
                               ),
                               Container(
                                 height: 50,
