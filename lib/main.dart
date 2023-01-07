@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_pokemon_game/button.dart';
 import 'package:flutter_pokemon_game/characters/boy.dart';
 import 'package:flutter_pokemon_game/maps/littleRoot.dart';
+import 'package:flutter_pokemon_game/maps/pokelab.dart';
 
 void main() {
   runApp(const MyApp());
@@ -33,8 +34,12 @@ class _HomePageState extends State<HomePage> {
   */
 
   // littleroot
-  double mapX = 0.08;
+  double mapX = 0.125;
   double mapY = 0.65;
+
+  // pokelab
+  double labMapX = 0;
+  double labMapY = 0;
 
   // boy character
   int boySpriteCount = 0;
@@ -44,42 +49,87 @@ class _HomePageState extends State<HomePage> {
   String currentLocation = 'littleroot';
   double step = 0.25;
 
+  // no mans land for littleroot
+  List<List<double>> noMansLandLittleroot = [
+    [1.33, -0.1],
+    [1.08, -0.1],
+    [0.83, -0.1],
+    [0.58, -0.1],
+    [0.33, -0.1],
+    [0.08, -0.1],
+    [0.83, 0.149],
+    [-0.1, 1.33],
+    [-0.1, 1.08],
+    [-0.1, 0.83],
+    [-0.1, 0.58],
+    [-0.1, 0.33],
+    [-0.1, 0.08],
+    [-0.1, 0.839],
+  ];
+
   void moveUp() {
     boyDirection = 'Up';
-    setState(() {
-      mapY += step;
-    });
-    animateWalk();
+    if (currentLocation == 'littleroot') {
+      if (canMoveTo(boyDirection, noMansLandLittleroot, mapX, mapY)) {
+        setState(() {
+          mapY += step;
+        });
+      }
+      if (double.parse((mapX).toStringAsFixed(4)) == 0.375 &&
+          double.parse((mapY).toStringAsFixed(4)) == -0.6) {
+        setState(() {
+          currentLocation = 'pokelab';
+          labMapX = 0;
+          labMapY = -2.73;
+        });
+      }
+      animateWalk();
+    }
   }
 
   void moveRight() {
     boyDirection = 'Right';
-    setState(() {
-      mapX -= step;
-    });
-    animateWalk();
+    if (currentLocation == 'littleroot') {
+      if (canMoveTo(boyDirection, noMansLandLittleroot, mapX, mapY)) {
+        setState(() {
+          mapX -= step;
+        });
+      }
+      animateWalk();
+    }
   }
 
   void moveDown() {
     boyDirection = 'Down';
-    setState(() {
-      mapY -= step;
-    });
-    animateWalk();
+    if (currentLocation == 'littleroot') {
+      if (canMoveTo(boyDirection, noMansLandLittleroot, mapX, mapY)) {
+        setState(() {
+          mapY -= step;
+        });
+      }
+      animateWalk();
+    }
   }
 
   void moveLeft() {
     boyDirection = 'Left';
-    setState(() {
-      mapX += step;
-    });
-    animateWalk();
+
+    if (currentLocation == 'littleroot') {
+      if (canMoveTo(boyDirection, noMansLandLittleroot, mapX, mapY)) {
+        setState(() {
+          mapX += step;
+        });
+      }
+      animateWalk();
+    }
   }
 
   void pressedA() {}
   void pressedB() {}
 
   void animateWalk() {
+    print('x:' + mapX.toString() + ', y:' + mapY.toString());
+
     Timer.periodic(Duration(milliseconds: 50), (timer) {
       setState(() {
         boySpriteCount++;
@@ -89,6 +139,33 @@ class _HomePageState extends State<HomePage> {
         timer.cancel();
       }
     });
+  }
+
+  bool canMoveTo(String direction, var noMansLand, double x, double y) {
+    double stepX = step;
+    double stepY = 0;
+
+    if (direction == 'Left') {
+      stepX = step;
+      stepY = 0;
+    } else if (direction == 'Right') {
+      stepX = -step;
+      stepY = 0;
+    } else if (direction == 'Up') {
+      stepX = 0;
+      stepY = step;
+    } else if (direction == 'Down') {
+      stepX = 0;
+      stepY = -step;
+    }
+
+    for (int i = 0; i < noMansLand.length; i++) {
+      if (((noMansLand[i][0]) == (x + stepX)) &&
+          ((noMansLand[i][1]) == (y + stepY))) {
+        return false;
+      }
+    }
+    return true;
   }
 
   @override
@@ -108,6 +185,8 @@ class _HomePageState extends State<HomePage> {
                   y: mapY,
                   currentMap: currentLocation,
                 ),
+                // pokelab
+                MyPokeLab(x: labMapX, y: labMapY, currentMap: currentLocation),
                 // boy character
                 Container(
                   alignment: Alignment(0, 0),
